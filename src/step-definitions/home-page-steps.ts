@@ -1,4 +1,4 @@
-import { Given, When } from '@cucumber/cucumber';
+import { Given, When, Then } from '@cucumber/cucumber';
 import { chromium, Browser, Page } from 'playwright';
 
 let browser: Browser; // represent browser instance
@@ -20,4 +20,14 @@ When('I clik Contact Us', async () => {
 
     const contactUs_button = await page.getByRole('link', { name: 'CONTACT US Contact Us Form' });
     await contactUs_button.click(); // click the button
+});
+
+When('I switch to the new browser tab', async () => {
+    page = await context.waitForEvent('page'); // wait for the new tab to open
+    await page.bringToFront(); // bring the new tab to the front
+});
+
+When('I type a first name', async () => {
+    await page.pause(); 
+    await page.getByPlaceholder('First Name').fill('Joe'); 
 });
