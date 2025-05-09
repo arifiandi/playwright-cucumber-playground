@@ -1,13 +1,7 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { chromium, Browser, Page } from 'playwright';
 
-let browser: Browser; 
-let context: any; 
-let page: Page; 
-
 When('I type a first name', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    // return 'pending';
     await page.pause(); 
     await page.getByPlaceholder('First Name').fill('Joe');
 });

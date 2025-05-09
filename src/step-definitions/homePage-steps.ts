@@ -6,11 +6,6 @@ let context: any; // represent a browser context (a separate session)
 let page: Page; // represent a single tab within the context
 
 Given('I navigate to Webdriveruniversity home page', async () => {
-    // Set the browser instance
-    browser = await chromium.launch({ headless: false }); // launch the browser
-    context = await browser.newContext({viewport: {width:1920, height:1080}}); // create a new browser context
-    page = await context.newPage(); // create a new page    
-
     // navigate to the URL
     await page.goto('https://www.webdriveruniversity.com/'); // navigate to the URL
 });
