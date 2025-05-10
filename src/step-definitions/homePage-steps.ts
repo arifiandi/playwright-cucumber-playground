@@ -28,8 +28,3 @@ When('I switch to the new browser tab', async () => {
 
     await pageFixture.page.setViewportSize({ width: 1920, height: 1080 });
 });
-
-// When('I type a first name', async () => {
-//     await page.pause(); 
-//     await page.getByPlaceholder('First Name').fill('Joe'); 
-// });

@@ -16,10 +16,9 @@ AfterAll(async function () {
 
 // Before is a hook that runs before each scenario in the test suite
 Before(async function () {
-    // Set the browser instance
     browser = await chromium.launch({ headless: false });
-    pageFixture.context = await browser.newContext({ viewport: { width: 1920, height: 1080 } }); // create a new browser context
-    pageFixture.page = await pageFixture.context.newPage(); // create a new page    
+    pageFixture.context = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+    pageFixture.page = await pageFixture.context.newPage();
 });
 
 // After is a hook that runs after each scenario in the test suite

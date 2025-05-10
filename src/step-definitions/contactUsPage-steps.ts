@@ -1,9 +1,10 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { chromium, Browser, Page } from 'playwright';
+import { pageFixture } from './hooks/browserContextFixture';
+
 
 When('I type a first name', async () => {
-    await page.pause(); 
-    await page.getByPlaceholder('First Name').fill('Joe');
+    // await page.pause(); 
+    await pageFixture.page.getByPlaceholder('First Name').fill('Joe');
 });
 
 When('I type a last name', async () => {
