@@ -8,17 +8,16 @@ Given('I navigate to Webdriveruniversity home page', async () => {
     await pageFixture.page.goto(url); // navigate to the URL
 });
 
-When('I clik Contact Us', async () => {
+When('I click Contact Us', async () => {
     // await page.pause(); // pause the execution for debugging
 
-    const contactUs_button = await pageFixture.page.getByRole('link', { name: 'CONTACT US Contact Us Form' });
-    await contactUs_button.click(); // click the button
+    const contactUs_Button = await pageFixture.page.getByRole('link', { name: 'CONTACT US Contact Us Form' });
+    await contactUs_Button.click();
 });
 
 When('I switch to the new browser tab', async () => {
      // wait for the new tab to open
     await pageFixture.context.waitForEvent('page');
-
     // get the new tab
     const allPages = pageFixture.context.pages();
     // get the last page (the new tab) and assign it to pageFixture.page
