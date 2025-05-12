@@ -18,10 +18,13 @@ When('I click Contact Us', async () => {
 When('I switch to the new browser tab', async () => {
      // wait for the new tab to open
     await pageFixture.context.waitForEvent('page');
+
     // get the new tab
     const allPages = pageFixture.context.pages();
+
     // get the last page (the new tab) and assign it to pageFixture.page
-    const newPage = allPages[allPages.length - 1]; 
+    pageFixture.page = allPages[allPages.length - 1]; 
+
     // bring the new tab to the front
     await pageFixture.page.bringToFront(); 
 

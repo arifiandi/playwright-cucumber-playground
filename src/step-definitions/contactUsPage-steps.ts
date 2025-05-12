@@ -4,7 +4,6 @@ import { pageFixture } from './hooks/browserContextFixture';
 
 When('I type a first name', async () => {
     // await page.pause();
-    await pageFixture.page.screenshot({ path: 'debug-screenshot.png' }); 
     await pageFixture.page.getByPlaceholder('First Name').fill('Joe');
 });
 
