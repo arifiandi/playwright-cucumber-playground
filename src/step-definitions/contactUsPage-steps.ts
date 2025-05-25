@@ -26,5 +26,11 @@ When('I click on the submit button', async () => {
 });
 
 Then('I should be presented with a successful contact us submission message', async () => {
-    // expect(await pageFixture.page.getByText('Thank You for your Message!')).toBeVisible();
+    // select element using id and add custom timeout
+    await pageFixture.page.waitForSelector('#contact_reply h1', { timeout: 60000 });
+
+    // get the text content of the element
+    const text = await pageFixture.page.innerText('#contact_reply h1')
+
+    expect(text).toBe('Thank You for your Message!');
 });
