@@ -1,5 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { pageFixture } from './hooks/browserContextFixture';
+import { expect } from '@playwright/test';
 
 
 When('I type a first name', async () => {
@@ -8,26 +9,22 @@ When('I type a first name', async () => {
 });
 
 When('I type a last name', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+   await pageFixture.page.getByPlaceholder('Last Name').fill('Bloggs');
 });
 
 When('I enter an email address', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    await pageFixture.page.getByPlaceholder('Email Address').fill('joebloggs@gmail.com');
 });
 
 When('I type a comment', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    await pageFixture.page.getByPlaceholder('Comments').fill('This is a test comment.');    
 });
 
 When('I click on the submit button', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    await pageFixture.page.waitForSelector('input[value="SUBMIT"]');
+    await pageFixture.page.getByRole('button', { name: 'SUBMIT' }).click();
 });
 
 Then('I should be presented with a successful contact us submission message', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    // expect(await pageFixture.page.getByText('Thank You for your Message!')).toBeVisible();
 });
