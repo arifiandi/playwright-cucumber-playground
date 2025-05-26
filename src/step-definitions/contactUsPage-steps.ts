@@ -9,7 +9,7 @@ When('I type a first name', async () => {
 });
 
 When('I type a last name', async () => {
-   await pageFixture.page.getByPlaceholder('Last Name').fill('Bloggs');
+    await pageFixture.page.getByPlaceholder('Last Name').fill('Bloggs');
 });
 
 When('I enter an email address', async () => {
@@ -17,7 +17,7 @@ When('I enter an email address', async () => {
 });
 
 When('I type a comment', async () => {
-    await pageFixture.page.getByPlaceholder('Comments').fill('This is a test comment.');    
+    await pageFixture.page.getByPlaceholder('Comments').fill('This is a test comment.');
 });
 
 When('I click on the submit button', async () => {
@@ -33,4 +33,18 @@ Then('I should be presented with a successful contact us submission message', as
     const text = await pageFixture.page.innerText('#contact_reply h1')
 
     expect(text).toBe('Thank You for your Message!');
+});
+
+Then('I should be presented with an unsuccessful contact us submission message', async () => {
+    // locate the <body> element and wait for it to be visible
+    await pageFixture.page.waitForSelector('body');
+
+    // locate the <body> element and get its text content
+    const bodyElement = await pageFixture.page.locator('body');
+
+    // extract the text content from the body element
+    const bodyText = await bodyElement.textContent();
+
+    // check if the body text contains the expected error message
+    await expect(bodyText).toMatch(/Error: (all fields are required|Invalid email address)/);
 });
