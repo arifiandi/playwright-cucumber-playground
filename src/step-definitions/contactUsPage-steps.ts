@@ -61,6 +61,23 @@ When('I enter a specific email address {string}', async (email: string) => {
     await pageFixture.page.getByPlaceholder('Email Address').fill(email);
 });
 
-When('I type specific text {string} and a number {int} within the home input field', async (word: string, number: number) =>{
+When('I type specific text {string} and a number {int} within the home input field', async (word: string, number: number) => {
     await pageFixture.page.getByPlaceholder('Comments').fill(`${word} ${number}`);
+});
+
+// Random data faker
+
+When('I type a random first name', async () => {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+});
+
+When('I type a random last name', async () => {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+});
+
+When('I enter a random email address', async () => {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
 });
