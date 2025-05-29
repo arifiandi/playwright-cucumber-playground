@@ -1,6 +1,7 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { pageFixture } from './hooks/browserContextFixture';
 import { expect } from '@playwright/test';
+import { faker } from '@faker-js/faker';
 
 
 When('I type a first name', async () => {
@@ -68,16 +69,16 @@ When('I type specific text {string} and a number {int} within the home input fie
 // Random data faker
 
 When('I type a random first name', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    const randomFirstName = faker.person.firstName();
+    await pageFixture.page.getByPlaceholder('First Name').fill(randomFirstName);
 });
 
 When('I type a random last name', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    const randomLastName = faker.person.lastName();
+    await pageFixture.page.getByPlaceholder('Last Name').fill(randomLastName);
 });
 
 When('I enter a random email address', async () => {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    const randomEmail = faker.internet.email();
+    await pageFixture.page.getByPlaceholder('Email Address').fill(randomEmail);
 });
