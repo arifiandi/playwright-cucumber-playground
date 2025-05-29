@@ -50,8 +50,6 @@ Then('I should be presented with an unsuccessful contact us submission message',
 });
 
 When('I type a specific first name {string}', async (firstName: string) => {
-    // Write code here that turns the phrase above into concrete actions
-    // return 'pending';
     await pageFixture.page.getByPlaceholder('First Name').fill(firstName);
 });
 
@@ -60,13 +58,9 @@ When('I type a specific last name {string}', async (lastName: string) => {
 });
 
 When('I enter a specific email address {string}', async (email: string) => {
-    // Write code here that turns the phrase above into concrete actions
-    // return 'pending';
     await pageFixture.page.getByPlaceholder('Email Address').fill(email);
 });
 
 When('I type specific text {string} and a number {int} within the home input field', async (word: string, number: number) =>{
-    // When('I type specific text {string} and a number {float} within the home input field', function (string, float) {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    await pageFixture.page.getByPlaceholder('Comments').fill(`${word} ${number}`);
 });
