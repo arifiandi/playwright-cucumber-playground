@@ -82,3 +82,20 @@ When('I enter a random email address', async () => {
     const randomEmail = faker.internet.email();
     await pageFixture.page.getByPlaceholder('Email Address').fill(randomEmail);
 });
+
+// Scenario outline 
+When('I type a specific first name {word} and last name {word}', async (firstName: string, lastName: string) => {
+    // Write code here that turns the phrase above into concrete actions
+    await pageFixture.page.getByPlaceholder('First Name').fill(firstName);
+    await pageFixture.page.getByPlaceholder('Last Name').fill(lastName);
+});
+
+When('I type an email address {string} and a comment {string}', async (email: string, comment: string) => {
+    await pageFixture.page.getByPlaceholder('Email Address').fill(email);
+    await pageFixture.page.getByPlaceholder('Comments').fill(comment);
+});
+
+Then('I should be presented with header text {string}', function (message: string) {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+});
