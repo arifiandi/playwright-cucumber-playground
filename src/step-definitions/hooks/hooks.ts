@@ -17,12 +17,30 @@ AfterAll(async function () {
 // Before is a hook that runs before each scenario in the test suite
 Before(async function () {
     browser = await chromium.launch({ headless: false });
-    pageFixture.context = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+    pageFixture.context = await browser.newContext({ 
+        viewport: { width: 1920, height: 1080 },
+        recordVideo: {
+            dir: 'test-results/videos/'
+        }
+    });
+    
+    // Start tracing
+    await pageFixture.context.tracing.start({ 
+        screenshots: true,
+        snapshots: true,
+        sources: true
+    });
+    
     pageFixture.page = await pageFixture.context.newPage();
 });
 
 // After is a hook that runs after each scenario in the test suite
-After(async function () {
+After(async function ({ pickle }) {
+    // Stop tracing and save to file named after the scenario
+    await pageFixture.context.tracing.stop({
+        path: `test-results/trace/${pickle.name.replace(/\s+/g, '-')}.zip`
+    });
+    
     // Close the browser context
     await pageFixture.page.close(); // close the browser context
     await browser.close();

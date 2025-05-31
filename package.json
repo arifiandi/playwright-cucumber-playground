@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "cucumberWithTS": "npx cucumber-js \"src/features/*.feature\" --require-module ts-node/register --require \"src/step-definitions/hooks/*.ts\" --require \"src/step-definitions/*.ts\" --require \"src/utils/*.ts\" "
+    "cucumberWithTS": "npx cucumber-js \"src/features/*.feature\" --require-module ts-node/register --require \"src/step-definitions/hooks/*.ts\" --require \"src/step-definitions/*.ts\" --require \"src/utils/*.ts\" ",
+    "show-trace": "playwright show-trace test-results/trace/*.zip"
   },
   "keywords": [],
   "author": "",
