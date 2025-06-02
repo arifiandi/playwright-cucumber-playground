@@ -50,7 +50,7 @@ Feature: Webdriveruniversity.com - Contact Us page
         And I type a specific first name <first_name> and last name <last_name>
         And I type an email address "<email_address>" and a comment "<comment>"
         And I click on the submit button
-        # Then I should be presented with header text "<message>"
+        Then I should be presented with header text "<message>"
 
         Examples:
             | first_name | last_name | email_address          | comment                 | message                     |

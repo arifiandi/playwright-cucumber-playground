@@ -95,7 +95,21 @@ When('I type an email address {string} and a comment {string}', async (email: st
     await pageFixture.page.getByPlaceholder('Comments').fill(comment);
 });
 
-Then('I should be presented with header text {string}', function (message: string) {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Then('I should be presented with header text {string}', async (message: string) => {
+    // wait for target element
+    await pageFixture.page.waitForSelector('//h1 | //body',{state: 'visible'});
+
+    // get all elements 
+    const elements = await pageFixture.page.locator('//h1 || body').elementHandles();
+    let foundElement = '';
+
+    // loop through elements and check if any of them contain the expected text
+    for (const element of elements) {
+        let text = await element.innerText();
+        if (text.includes(message)) {
+            foundElement = text;
+            break; // exit loop if found
+        }
+    }
+    expect(foundElement).toContain(message);
 });
