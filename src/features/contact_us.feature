@@ -1,9 +1,11 @@
 Feature: Webdriveruniversity.com - Contact Us page
 
-    Scenario: Valid Contact Us Form Submission
+    Background: open the Webdriveruniversity home page and navigate to the Contact Us page
         Given I navigate to Webdriveruniversity home page
         When I click Contact Us
         And I switch to the new browser tab
+
+    Scenario: Valid Contact Us Form Submission
         And I type a first name
         And I type a last name
         And I enter an email address
@@ -12,9 +14,6 @@ Feature: Webdriveruniversity.com - Contact Us page
         Then I should be presented with a successful contact us submission message
 
     Scenario: Invalid Contact Us Form Submission
-        Given I navigate to Webdriveruniversity home page
-        When I click Contact Us
-        And I switch to the new browser tab
         And I type a first name
         And I type a last name
         And I type a comment
@@ -22,9 +21,6 @@ Feature: Webdriveruniversity.com - Contact Us page
         Then I should be presented with an unsuccessful contact us submission message
 
     Scenario: Valid Contact Us Form Submission - Using Specific Data
-        Given I navigate to Webdriveruniversity home page
-        When I click Contact Us
-        And I switch to the new browser tab
         And I type a specific first name "Sarah"
         And I type a specific last name "Connor"
         And I enter a specific email address "sarah_connor@example.com"
@@ -33,9 +29,6 @@ Feature: Webdriveruniversity.com - Contact Us page
         Then I should be presented with a successful contact us submission message
 
     Scenario: Valid Contact Us Form Submission - Using Random Data
-        Given I navigate to Webdriveruniversity home page
-        When I click Contact Us
-        And I switch to the new browser tab
         And I type a random first name
         And I type a random last name
         And I enter a random email address
@@ -44,9 +37,6 @@ Feature: Webdriveruniversity.com - Contact Us page
         Then I should be presented with a successful contact us submission message
 
     Scenario Outline: Validate Contact Us page with scenario outline
-        Given I navigate to Webdriveruniversity home page
-        When I click Contact Us
-        And I switch to the new browser tab
         And I type a specific first name <first_name> and last name <last_name>
         And I type an email address "<email_address>" and a comment "<comment>"
         And I click on the submit button
