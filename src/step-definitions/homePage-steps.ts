@@ -8,14 +8,15 @@ Given('I navigate to Webdriveruniversity home page', async () => {
     await pageFixture.page.goto(url); // navigate to the URL
 });
 
-When('I click {word}', async (buttonName) => {
+When('I click {string} link', async (linkName: string) => {
+    const elem = linkName.toUpperCase()
     try {
-        // wait for the button to be visible and clickable
-        await pageFixture.page.getByRole('link', { name: buttonName }).waitFor({ state: 'visible' });
-        // click the button
-        await pageFixture.page.getByRole('link', { name: buttonName }).click();
+        // wait for the link to be visible and clickable
+        await pageFixture.page.locator('//h1').getByText(elem).waitFor({ state: 'visible' });
+        // click the link
+        await pageFixture.page.getByText(elem).click();
     } catch (error) {
-        console.error(`Error clicking button ${buttonName}:`, error);
+        console.error(`Error clicking link ${linkName}:`, error);
     }
 });
 

@@ -2,7 +2,7 @@ Feature: Webdriveruniversity.com - Login portal page
 
     Background: open the Webdriveruniversity home page and navigate to the Contact Us page
         Given I navigate to Webdriveruniversity home page
-        When I click Login Portal
+        When I click "Login Portal" link
         And I switch to the new browser tab
 
     Scenario Outline: Scenario Outline name
