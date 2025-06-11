@@ -12,9 +12,9 @@ When('I click {string} link', async (linkName: string) => {
     const elem = linkName.toUpperCase()
     try {
         // wait for the link to be visible and clickable
-        await pageFixture.page.locator('//h1').getByText(elem).waitFor({ state: 'visible' });
+        await pageFixture.page.locator('h1', {hasText: elem}).waitFor({ state: 'visible' });
         // click the link
-        await pageFixture.page.getByText(elem).click();
+        await pageFixture.page.locator('h1', {hasText: elem}).click();
     } catch (error) {
         console.error(`Error clicking link ${linkName}:`, error);
     }
