@@ -5,6 +5,7 @@ Feature: Webdriveruniversity.com - Login portal page
         When I click "Login Portal" link
         And I switch to the new browser tab
 
+    @loginPortal @loginPortal-1
     Scenario Outline: Scenario Outline name
         And I enter "<username>" and "<password>"
         And I click on the login button
