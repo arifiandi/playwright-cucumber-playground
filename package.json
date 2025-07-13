@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "cucumberWithTS": "npx cucumber-js \"src/features/*.feature\" --require-module ts-node/register --require \"src/step-definitions/hooks/*.ts\" --require \"src/step-definitions/*.ts\" --require \"src/utils/*.ts\" ",
-    "show-trace": "playwright show-trace test-results/trace/*.zip"
+    "show-trace": "playwright show-trace test-results/trace/*.zip",
+    "cucumber": "npx cucumber-js && ts-node ./src/index.ts"
   },
   "keywords": [],
   "author": "",
