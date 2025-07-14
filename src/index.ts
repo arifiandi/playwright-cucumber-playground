@@ -1,10 +1,11 @@
-import { exec } from "child_process"; // to allow execution of shell commands
+import { exec } from "child_process"; // to allow execution of shell commands  
 
 // Define common command string for running Cucumber tests
 const common = `./src/features/*.feature \
   --require-module ts-node/register \
   --require ./src/step-definitions/**/**/*.ts \
-  --require ./src/utils/cucumber-timeout.ts`;
+  --require ./src/utils/cucumber-timeout.ts \
+  -f json:./reports/report.json`;
 
 // Define an interface for the profile object
 // It defines an interface where each key is a string and its value is a string
@@ -17,7 +18,7 @@ const profiles: profileCommands = {
     smoke: `${common} --tags "@smoke"`,
     regression: `${common} --tags "@regression"`,
     sanity: `${common} --tags "@sanity"`,
-    loginPortal: `${common} --tags "@loginPortal"`, 
+    loginPortal: `${common} --tags "@loginPortal"`,
     contactUs: `${common} --tags "@contactUs"`
 }
 
@@ -35,10 +36,10 @@ let command = `npx cucumber-js ${profiles[profile as 'smoke' | 'regression' | 's
 exec(command, { encoding: 'utf-8' }, (error: Error | null, stdout: string) => {
     // Log the output of the command
     console.log(`Command output:\n${stdout}`);
-    
+
     // If there is an error, throw an error with the message
     if (error) {
         throw new Error(`Error executing command: ${error.message}`);
     }
-    
+
 });
