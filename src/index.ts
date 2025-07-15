@@ -5,7 +5,8 @@ const common = `./src/features/*.feature \
   --require-module ts-node/register \
   --require ./src/step-definitions/**/**/*.ts \
   --require ./src/utils/cucumber-timeout.ts \
-  -f json:./reports/report.json`;
+  -f json:./reports/report.json \
+  --format html:./reports/report.html;`;
 
 // Define an interface for the profile object
 // It defines an interface where each key is a string and its value is a string
