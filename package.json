@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "cucumberWithTS": "npx cucumber-js \"src/features/*.feature\" --require-module ts-node/register --require \"src/step-definitions/hooks/*.ts\" --require \"src/step-definitions/*.ts\" --require \"src/utils/*.ts\" ", 
+    "cucumberWithTS": "npx cucumber-js \"src/features/*.feature\" --require-module ts-node/register --require \"src/step-definitions/hooks/*.ts\" --require \"src/step-definitions/*.ts\" --require \"src/utils/*.ts\" ",
     "show-trace": "playwright show-trace test-results/trace/*.zip",
+    "precucumber": "rimraf reports && mkdir reports",
     "cucumber": "npx cucumber-js && ts-node ./src/index.ts"
   },
   "keywords": [],
@@ -18,5 +19,8 @@
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.2",
     "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "rimraf": "^6.0.1"
   }
 }

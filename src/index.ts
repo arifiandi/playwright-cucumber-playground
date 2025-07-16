@@ -42,5 +42,4 @@ exec(command, { encoding: 'utf-8' }, (error: Error | null, stdout: string) => {
     if (error) {
         throw new Error(`Error executing command: ${error.message}`);
     }
-
 });
