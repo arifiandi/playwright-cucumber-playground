@@ -2,6 +2,16 @@ import { After, AfterAll, Before, BeforeAll, Status } from "@cucumber/cucumber";
 import { Browser, chromium } from "@playwright/test";
 import { pageFixture } from "./browserContextFixture";
 
+import { config as loadEnv } from "dotenv";
+const env = loadEnv({ path: './env/.env' }); // Load environment variables from .env file
+
+const config = {
+    headless: env.parsed?.HEADLESS === 'true', // Convert string to boolean
+    browser: env.parsed?.UI_AUTOMATION_BROWSER || 'chromium',
+    width: parseInt(env.parsed?.BROWSER_WIDTH || '1920', 10),
+    height: parseInt(env.parsed?.BROWSER_HEIGHT || '1080', 10)
+}
+
 let browser: Browser; // represent browser instance
 
 // BeforeAll is a hook that runs before all scenarios in the test suite
@@ -17,20 +27,20 @@ AfterAll(async function () {
 // Before is a hook that runs before each scenario in the test suite
 Before(async function () {
     browser = await chromium.launch({ headless: false });
-    pageFixture.context = await browser.newContext({ 
+    pageFixture.context = await browser.newContext({
         viewport: { width: 1920, height: 1080 },
         recordVideo: {
             dir: 'test-results/videos/'
         }
     });
-    
+
     // Start tracing
-    await pageFixture.context.tracing.start({ 
+    await pageFixture.context.tracing.start({
         screenshots: true,
         snapshots: true,
         sources: true
     });
-    
+
     pageFixture.page = await pageFixture.context.newPage();
 });
 
@@ -40,11 +50,11 @@ After(async function ({ pickle, result }) {
         // If the scenario failed, take a screenshot
         if (pageFixture.page) {
             const screenshotPath = `./reports/screenshots/${pickle.name}${Date.now()}.png`;
-            const image = await pageFixture.page.screenshot({ 
+            const image = await pageFixture.page.screenshot({
                 path: screenshotPath,
                 type: 'png'
-             });
-             await this.attach(image, 'image/png');
+            });
+            await this.attach(image, 'image/png');
             console.log(`Screenshot taken for failed scenario: ${screenshotPath}`);
         } else {
             console.error('Page is not defined, cannot take screenshot.');
@@ -54,7 +64,7 @@ After(async function ({ pickle, result }) {
     await pageFixture.context.tracing.stop({
         path: `test-results/trace/${pickle.name.replace(/\s+/g, '-')}.zip`
     });
-    
+
     // Close the browser context
     await pageFixture.page.close(); // close the browser context
     await browser.close();
