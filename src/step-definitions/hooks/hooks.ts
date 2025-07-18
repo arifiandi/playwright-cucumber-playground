@@ -34,7 +34,22 @@ async function initializeBrowserContext(selectBrowser: string): Promise<Browser>
         throw new Error(`Browser ${selectBrowser} is not supported.`);
     }
     return await launchBrowser.launch({ headless: config.headless }); // Launch the browser with headless mode based on environment variable
-}   
+}
+
+// Initialize the browser instance based on the selected browser
+async function initializePage(): Promise<void> {
+    if (!browserInstance) {
+        throw new Error('Browser instance is null');
+    }
+    pageFixture.context = await browserInstance.newContext({
+        ignoreHTTPSErrors: true
+    });
+    pageFixture.page = await pageFixture.context.newPage();
+    await pageFixture.page.setViewportSize({
+        width: config.width,
+        height: config.height
+    });
+}
 
 // BeforeAll is a hook that runs before all scenarios in the test suite
 BeforeAll(async function () {
@@ -48,13 +63,13 @@ AfterAll(async function () {
 
 // Before is a hook that runs before each scenario in the test suite
 Before(async function () {
-    browser = await chromium.launch({ headless: false });
-    pageFixture.context = await browser.newContext({
-        viewport: { width: 1920, height: 1080 },
-        recordVideo: {
-            dir: 'test-results/videos/'
-        }
-    });
+    try {
+        browserInstance = await initializeBrowserContext(config.browser);
+        console.log(`Browser context initialized for ${config.browser}`);
+        await initializePage();
+    } catch (error) {
+        console.error(`Error initializing browser context: ${error}`);
+    }
 
     // Start tracing
     await pageFixture.context.tracing.start({
@@ -62,8 +77,6 @@ Before(async function () {
         snapshots: true,
         sources: true
     });
-
-    pageFixture.page = await pageFixture.context.newPage();
 });
 
 // After is a hook that runs after each scenario in the test suite
