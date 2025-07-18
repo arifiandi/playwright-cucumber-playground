@@ -101,6 +101,8 @@ After(async function ({ pickle, result }) {
     });
 
     // Close the browser context
-    await pageFixture.page.close(); // close the browser context
-    await browser.close();
+    if(browserInstance) {
+        await pageFixture.page?.close();
+        await browserInstance.close();
+    }
 });
