@@ -1,5 +1,5 @@
 import { After, AfterAll, Before, BeforeAll, Status } from "@cucumber/cucumber";
-import { Browser, chromium } from "@playwright/test";
+import { Browser, chromium, BrowserType, firefox, webkit } from "@playwright/test";
 import { pageFixture } from "./browserContextFixture";
 
 import { config as loadEnv } from "dotenv";
@@ -12,7 +12,29 @@ const config = {
     height: parseInt(env.parsed?.BROWSER_HEIGHT || '1080', 10)
 }
 
-let browser: Browser; // represent browser instance
+// create dictionary mapping browser names to their launch functions
+// This allows for dynamic browser selection based on environment variables
+// The browsers object maps browser names to their respective Playwright launch functions
+// This allows for dynamic browser selection based on environment variables
+// The `browsers` object contains the supported browsers and their respective launch functions
+// The `browserInstance` variable will hold the instance of the launched browser
+// The `initializeBrowserContext` function initializes the browser context based on the selected browser
+
+const browsers: { [key: string]: BrowserType } = {
+    'chromium': chromium,
+    'firefox': firefox,
+    'webkit': webkit
+};
+
+let browserInstance: Browser | null = null; // represent browser instance
+
+async function initializeBrowserContext(selectBrowser: string): Promise<Browser> {
+    const launchBrowser = browsers[selectBrowser];
+    if (!launchBrowser) {
+        throw new Error(`Browser ${selectBrowser} is not supported.`);
+    }
+    return await launchBrowser.launch({ headless: config.headless }); // Launch the browser with headless mode based on environment variable
+}   
 
 // BeforeAll is a hook that runs before all scenarios in the test suite
 BeforeAll(async function () {
