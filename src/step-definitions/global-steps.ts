@@ -1,6 +1,15 @@
 import { When } from "@cucumber/cucumber";
 import { pageFixture } from './hooks/browserContextFixture';
 
+// Load environment variables from .env file
+import { config as loadEnv } from "dotenv";
+const env = loadEnv({ path: './env/.env' });
+
+const config = {
+    width: parseInt(env.parsed?.BROWSER_WIDTH || '1920', 10),
+    height: parseInt(env.parsed?.BROWSER_HEIGHT || '1080', 10)
+}
+
 When('I switch to the new browser tab', async () => {
     // wait for the new tab to open
     await pageFixture.context.waitForEvent('page');
@@ -14,7 +23,7 @@ When('I switch to the new browser tab', async () => {
     // bring the new tab to the front
     await pageFixture.page.bringToFront();
 
-    await pageFixture.page.setViewportSize({ width: 1920, height: 1080 });
+    await pageFixture.page.setViewportSize({ width: config.width, height: config.height });
 });
 
 When('wait for {int} seconds', async (seconds: number) => {
