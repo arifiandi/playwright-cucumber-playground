@@ -1,5 +1,6 @@
 import * as winston from 'winston';
 import colors from '@colors/colors';
+import { TransformableInfo } from 'logform';
 
 //define the custom format 
 // const logger = winston.createLogger({
@@ -19,18 +20,28 @@ import colors from '@colors/colors';
 
 // export default logger;
 
-const myformat = winston.format.printf(({ level, message, timestamp }) => {
-    let colorizedMessage = message;
-    switch (level) {
+const myFormat = winston.format.printf((info: TransformableInfo) => {
+    let colorizedMessage = info.message;
+    switch (info.level) {
         case 'error':
-            colorizedMessage = colors.red(message);
+            colorizedMessage = colors.red(info.message as string);
             break;
         case 'warn':
-            colorizedMessage = colors.yellow(message);
+            colorizedMessage = colors.yellow(info.message as string);
             break;
         case 'info':
-            colorizedMessage = colors.blue(message);
+            colorizedMessage = colors.green(info.message as string);
             break;
     }
-    return `${timestamp} [${level}]: ${colorizedMessage}`;
+    return `${info.timestamp} ${info.level}: ${colorizedMessage}`
+});
+
+// Create logger instance
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(), // Required for timestamp to exist
+    myFormat
+  ),
+  transports: [new winston.transports.Console()]
 });
