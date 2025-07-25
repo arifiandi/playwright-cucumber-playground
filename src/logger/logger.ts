@@ -2,6 +2,9 @@ import * as winston from 'winston';
 import colors from '@colors/colors';
 import { TransformableInfo } from 'logform';
 
+import dotenv from 'dotenv';
+dotenv.config({ path: './env/.env' }); // Load environment variables from .env file
+
 //define the custom format 
 // const logger = winston.createLogger({
 //   level: 'info',
@@ -38,10 +41,12 @@ const myFormat = winston.format.printf((info: TransformableInfo) => {
 
 // Create logger instance
 const logger = winston.createLogger({
-  level: 'info',
+  level: process.env.LOG_LEVEL || 'info', // Default log level is 'info'
   format: winston.format.combine(
     winston.format.timestamp(), // Required for timestamp to exist
     myFormat
   ),
-  transports: [new winston.transports.Console()]
+  transports: [new winston.transports.Console()] // Log to console
 });
+
+export default logger;
