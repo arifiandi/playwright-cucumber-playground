@@ -1,11 +1,13 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { pageFixture } from './hooks/browserContextFixture';
+import logger from '../logger/logger'; // Import logger
 
 const url = 'https://www.webdriveruniversity.com/'; // URL to navigate to
 
 Given('I navigate to Webdriveruniversity home page', async () => {
     // navigate to the URL
     await pageFixture.page.goto(url); // navigate to the URL
+    logger.info(`Navigated to ${url}`); // Log the navigation
 });
 
 When('I click {string} link', async (linkName: string) => {
