@@ -9,7 +9,7 @@ Given('I navigate to Webdriveruniversity home page', async () => {
         // navigate to the URL
         await pageFixture.page.goto(url); // navigate to the URL
         logger.info(`Navigated to ${url}`); // Log the navigation   
-        throw new Error('This is a test error'); // Intentionally throw an error for testing 
+        // throw new Error('This is a test error'); // Intentionally throw an error for testing 
     } catch (error: any) {
         logger.error(`Error navigating to ${url}:`, error);
     }
