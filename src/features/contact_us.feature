@@ -3,7 +3,7 @@ Feature: Webdriveruniversity.com - Contact Us page
 
     Background: open the Webdriveruniversity home page and navigate to the Contact Us page
         Given I navigate to Webdriveruniversity home page
-        When I click "Contact Us555" link
+        When I click "Contact Us" link
         And I switch to the new browser tab
 
     @contactUs-1
