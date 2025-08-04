@@ -2,10 +2,13 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { pageFixture } from './hooks/browserContextFixture';
 import { expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
+import { CucumberWorld } from './world/cucumberWorld';
+import logger from '../logger/logger';
 
 
-When('I type a first name', async () => {
+When('I type a first name', async function (this: CucumberWorld) {
     // await page.pause();
+    logger.info(`Base URL stored in Cucumber World: ${this.getUrl()}`);
     await pageFixture.page.getByPlaceholder('First Name').fill('Joe');
 });
 
@@ -68,19 +71,28 @@ When('I type specific text {string} and a number {int} within the home input fie
 
 // Random data faker
 
-When('I type a random first name', async () => {
+When('I type a random first name', async function (this: CucumberWorld) {
     const randomFirstName = faker.person.firstName();
+    this.setFirstName(randomFirstName); // Set the random first name in the world object
     await pageFixture.page.getByPlaceholder('First Name').fill(randomFirstName);
 });
 
-When('I type a random last name', async () => {
+When('I type a random last name', async function (this: CucumberWorld) {
     const randomLastName = faker.person.lastName();
+    this.setLastName(randomLastName); // Set the random last name in the world object
     await pageFixture.page.getByPlaceholder('Last Name').fill(randomLastName);
 });
 
-When('I enter a random email address', async () => {
+When('I enter a random email address', async function (this: CucumberWorld) {
     const randomEmail = faker.internet.email();
+    this.setEmailAddress(randomEmail); // Set the random email in the world object
     await pageFixture.page.getByPlaceholder('Email Address').fill(randomEmail);
+});
+
+When('I type a random comment', async function (this: CucumberWorld) {
+    const randomComment = faker.lorem.sentence();
+    await pageFixture.page.getByPlaceholder('Comments').fill(`Please could you contact me? \n thanks! ${this.getFirstName()} ${this.getLastName()} ${this.getEmailAddress()} \n ${randomComment}`);
+    // await pageFixture.page.pause();
 });
 
 // Scenario outline 
