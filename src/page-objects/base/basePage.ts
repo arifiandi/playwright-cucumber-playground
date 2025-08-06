@@ -22,7 +22,7 @@ export class BasePage {
         await locator.click();
     }
 
-    public async waitAndClickSelector(selector: string): Promise<void> {
+    public async waitAndClickSelector(selector: string, p0?: { hasText: string; }): Promise<void> {
         await this.page.waitForSelector(selector);
         await this.page.click(selector);
     }
