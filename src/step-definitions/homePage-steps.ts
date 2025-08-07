@@ -22,10 +22,11 @@ When('I click {string} link', async function (this: CucumberWorld, linkName: str
     const elem = linkName.toUpperCase()
     try {
         // wait for the link to be visible and clickable
-        await this.basePage.waitAndClickSelector('h1', { hasText: elem });
-        // click the link
-        // await this.basePage.click('h1', { hasText: elem });
+        await this.basePage.clickLinkByText('h1', elem );
+        logger.info(`Clicked on link: ${linkName}`);
     } catch (error) {
         console.error(`Error clicking link ${linkName}:`, error);
+        logger.error(`Error clicking link ${linkName}:`, error);
+        throw error; // rethrow the error to fail the test
     }
 });

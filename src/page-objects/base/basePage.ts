@@ -26,4 +26,9 @@ export class BasePage {
         await this.page.waitForSelector(selector);
         await this.page.click(selector);
     }
+
+    public async clickLinkByText(selector:string, text: string): Promise<void> {
+        const linkByText = (text: string) => `${selector}:has-text("${text}")`;
+        await this.page.locator(linkByText(text)).click();
+    }
 }

@@ -7,7 +7,7 @@ export class pageManager {
         return pageFixture.page;
     }
 
-    get createBasePage(): BasePage {
+    createBasePage(): BasePage {
         return new BasePage();
     }
 }

@@ -14,8 +14,8 @@ export class CucumberWorld extends World {
     private lastName?: string;
     private emailAddress?: string;
 
-    constructor({ attach, log, parameters }: IWorldOptions) {
-        super({ attach, log, parameters });
+    constructor({ attach, log, parameters, link }: IWorldOptions) {
+        super({ attach, log, parameters, link });
         this.pageManager = new pageManager(); // Initialize page manager for accessing page and basePage
         this.basePage = this.pageManager.createBasePage(); // Access basePage from pageManager
     }
