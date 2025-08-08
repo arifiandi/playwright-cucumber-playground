@@ -27,8 +27,24 @@ export class BasePage {
         await this.page.click(selector);
     }
 
-    public async clickLinkByText(selector:string, text: string): Promise<void> {
+    public async clickLinkByText(selector: string, text: string): Promise<void> {
         const linkByText = (text: string) => `${selector}:has-text("${text}")`;
         await this.page.locator(linkByText(text)).click();
+    }
+
+    public async switchToNewTab(): Promise<void> {
+        // wait for the new tab to open
+        await this.page.context().waitForEvent('page');
+
+        // get the new tab
+        const allPages = await this.page.context().pages();
+
+        // get the last page (the new tab) and assign it to pageFixture.page
+        pageFixture.page = allPages[allPages.length - 1];
+
+        // bring the new tab to the front
+        await this.page.bringToFront();
+
+        await this.page.setViewportSize({ width: 1920, height: 1080 });
     }
 }
