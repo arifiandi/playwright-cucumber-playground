@@ -8,5 +8,5 @@ export class HomePage extends BasePage {
 
   public async clickOnLoginPortalBtn(): Promise<void> {
     await this.waitAndClickByRole("link", "Login Portal");
-  }
+  } 
 }

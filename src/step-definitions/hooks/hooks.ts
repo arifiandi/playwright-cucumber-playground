@@ -75,6 +75,7 @@ Before(async function () {
         this.pageManager = new pageManager(); // Initialize page manager for accessing page and basePage
         this.basePage = this.pageManager.createBasePage(); // Access basePage from pageManager
         this.homePage = this.pageManager.createHomePage(); // Create an instance of HomePage
+        this.contactUsPage = this.pageManager.createContactUsPage(); // Create an instance of ContactUsPage
     } catch (error) {
         console.error(`Error initializing browser context: ${error}`);
     }
