@@ -31,7 +31,7 @@ When('I click on the submit button', async function (this: CucumberWorld) {
 Then('I should be presented with a successful contact us submission message', async function (this: CucumberWorld) {
     const successMessage = await this.contactUsPage.getSuccessMessage();
     logger.info(`Success message: ${successMessage}`);
-    expect(successMessage).toBe('Thank you for your Message!');
+    expect(successMessage).toBe('Thank You for your Message!');
 });
 
 Then('I should be presented with an unsuccessful contact us submission message', async function (this: CucumberWorld) {
@@ -61,54 +61,39 @@ When('I type specific text {string} and a number {int} within the home input fie
 When('I type a random first name', async function (this: CucumberWorld) {
     const randomFirstName = faker.person.firstName();
     this.setFirstName(randomFirstName); // Set the random first name in the world object
-    await pageFixture.page.getByPlaceholder('First Name').fill(randomFirstName);
+    await this.contactUsPage.fillFirstName(randomFirstName);
 });
 
 When('I type a random last name', async function (this: CucumberWorld) {
     const randomLastName = faker.person.lastName();
     this.setLastName(randomLastName); // Set the random last name in the world object
-    await pageFixture.page.getByPlaceholder('Last Name').fill(randomLastName);
+    await this.contactUsPage.fillLastName(randomLastName);
 });
 
 When('I enter a random email address', async function (this: CucumberWorld) {
     const randomEmail = faker.internet.email();
     this.setEmailAddress(randomEmail); // Set the random email in the world object
-    await pageFixture.page.getByPlaceholder('Email Address').fill(randomEmail);
+    await this.contactUsPage.fillEmail(randomEmail);
 });
 
 When('I type a random comment', async function (this: CucumberWorld) {
     const randomComment = faker.lorem.sentence();
-    await pageFixture.page.getByPlaceholder('Comments').fill(`Please could you contact me? \n thanks! ${this.getFirstName()} ${this.getLastName()} ${this.getEmailAddress()} \n ${randomComment}`);
-    // await pageFixture.page.pause();
+    await this.contactUsPage.fillComment(`Please could you contact me? \n thanks! ${this.getFirstName()} ${this.getLastName()} ${this.getEmailAddress()} \n ${randomComment}`);
 });
 
 // Scenario outline 
-When('I type a specific first name {word} and last name {word}', async (firstName: string, lastName: string) => {
-    // Write code here that turns the phrase above into concrete actions
-    await pageFixture.page.getByPlaceholder('First Name').fill(firstName);
-    await pageFixture.page.getByPlaceholder('Last Name').fill(lastName);
+When('I type a specific first name {word} and last name {word}', async function (this: CucumberWorld, firstName: string, lastName: string) {
+    await this.contactUsPage.fillFirstName(firstName);
+    await this.contactUsPage.fillLastName(lastName);
 });
 
-When('I type an email address {string} and a comment {string}', async (email: string, comment: string) => {
-    await pageFixture.page.getByPlaceholder('Email Address').fill(email);
-    await pageFixture.page.getByPlaceholder('Comments').fill(comment);
+When('I type an email address {string} and a comment {string}', async function (this: CucumberWorld, email: string, comment: string) {
+    await this.contactUsPage.fillEmail(email);
+    await this.contactUsPage.fillComment(comment);
 });
 
-Then('I should be presented with header text {string}', async (message: string) => {
-    // wait for target element
-    await pageFixture.page.waitForSelector('//h1 | //body', { state: 'visible' });
-
-    // get all elements 
-    const elements = await pageFixture.page.locator('//h1 | //body').elementHandles();
-    let foundElement = '';
-
-    // loop through elements and check if any of them contain the expected text
-    for (const element of elements) {
-        let text = await element.innerText();
-        if (text.includes(message)) {
-            foundElement = text;
-            break; // exit loop if found
-        }
-    }
-    expect(foundElement).toContain(message);
+Then('I should be presented with header text {string}', async function (this: CucumberWorld, message: string) {
+    const headerText = await this.contactUsPage.getHeaderText(message);
+    logger.info(`Header text: ${headerText}`);
+    expect(headerText).toContain(message);
 });
