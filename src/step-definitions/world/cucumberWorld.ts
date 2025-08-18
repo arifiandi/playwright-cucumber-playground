@@ -3,12 +3,14 @@ import { pageManager } from '../../page-objects/base/page-manager';
 import { BasePage } from '../../page-objects/base/base-page';
 import { HomePage } from '../../page-objects/home-page';
 import { ContactUsPage } from '../../page-objects/contactUs-page';
+import { loginPortalPage } from '../../page-objects/login-portal-page';
 
 export class CucumberWorld extends World {
     public pageManager: pageManager; // Instance of pageManager to access page and basePage
     public basePage: BasePage; // Instance of BasePage for common page actions
     public homePage: HomePage; // Instance of HomePage for homepage-specific actions
     public contactUsPage: ContactUsPage; // Instance of ContactUsPage for contact us page actions
+    public loginPortalPage: loginPortalPage; // Placeholder for login portal page, adjust type as needed
 
     //base url
     private url?: string;
@@ -24,6 +26,7 @@ export class CucumberWorld extends World {
         this.basePage = this.pageManager.createBasePage(); // Access basePage from pageManager
         this.homePage = this.pageManager.createHomePage(); // Create an instance of HomePage
         this.contactUsPage = this.pageManager.createContactUsPage(); // Create an instance of ContactUsPage
+        this.loginPortalPage = this.pageManager.createLoginPortalPage(); // Create an instance of LoginPortalPage
     }
 
     //setter methods for first name etc:

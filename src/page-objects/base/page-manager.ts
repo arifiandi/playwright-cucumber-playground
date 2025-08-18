@@ -3,6 +3,7 @@ import { BasePage } from "./base-page";
 import { pageFixture } from '../../step-definitions/hooks/browserContextFixture'; // Adjust the import path as necessary
 import { HomePage } from "./../home-page"; 
 import { ContactUsPage } from "../contactUs-page";
+import { loginPortalPage } from "../login-portal-page";
 
 export class pageManager {
     get page(): Page {
@@ -19,5 +20,9 @@ export class pageManager {
 
     createContactUsPage(): ContactUsPage {
         return new ContactUsPage();
+    }
+
+    createLoginPortalPage(): loginPortalPage {
+        return new loginPortalPage(this.page);
     }
 }
