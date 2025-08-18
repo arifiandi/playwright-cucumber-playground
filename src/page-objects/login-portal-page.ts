@@ -2,9 +2,9 @@ import { Page } from "@playwright/test";
 import { BasePage } from "./base/base-page";
 
 export class loginPortalPage extends BasePage {
-    constructor(page: Page) {
-        super(page);
-    }
+    // constructor(page: Page) {
+    //     super(page);
+    // }
 
     // Locators
     private readonly usernameInput = this.page.getByPlaceholder('Username');
