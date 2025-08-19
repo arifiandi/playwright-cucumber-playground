@@ -2,8 +2,10 @@ import { BrowserContext, Locator, Page } from "@playwright/test";
 import { pageFixture } from '../../step-definitions/hooks/browserContextFixture'; // Adjust the import path as necessary
 
 export class BasePage {
-    get page(): Page {
-        return pageFixture.page;
+    protected readonly page: Page;
+
+    constructor() {
+        this.page = pageFixture.page;
     }
 
     //   Promise<void> in typescript when you're defining an async function that doesn't explicitly return a value

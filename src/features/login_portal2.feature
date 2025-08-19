@@ -3,8 +3,6 @@ Feature: Webdriveruniversity.com - Login portal page
 
     Background: open the Login Portal page
         Given I navigate to Login Portal page
-        When I click "Login Portal" link
-        And I switch to the new browser tab
 
     @loginPortal-2
     Scenario Outline: Scenario Outline name
