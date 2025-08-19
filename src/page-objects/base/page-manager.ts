@@ -23,6 +23,6 @@ export class pageManager {
     }
 
     createLoginPortalPage(): loginPortalPage {
-        return new loginPortalPage(this.page);
+        return new loginPortalPage();
     }
 }
