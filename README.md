@@ -8,74 +8,76 @@ This project is an automation testing framework using Playwright with Cucumber f
 - npm (Node Package Manager)
 - Git
 
-## Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/arifiandi/playwright-cucumber-playground.git
-cd playwright-cucumber-playground
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Install Playwright Browsers
-
-```bash
-npx playwright install
-```
-
 ## Project Structure
 
 ```
 playwright-cucumber-playground/
+├── env/                   # Environment configuration
+│   └── .env              # Environment variables
 ├── src/
-│   ├── features/          # Cucumber feature files
-│   ├── step-definitions/  # Step definitions
-│   │   └── hooks/        # Test hooks and fixtures
-│   └── utils/            # Utility functions
-└── package.json
+│   ├── features/         # Cucumber feature files
+│   ├── page-objects/     # Page Object Models
+│   │   ├── base/        # Base classes and page manager
+│   │   └── pages/       # Individual page objects
+│   ├── step-definitions/ # Step definitions
+│   │   ├── hooks/       # Test hooks and fixtures
+│   │   └── world/       # Cucumber World customization
+│   ├── logger/          # Custom logging setup
+│   └── utils/           # Utility functions
+├── reports/             # Test execution reports
+└── test-results/        # Test artifacts (traces, screenshots)
 ```
 
 ## Running Tests
 
 ### Run all tests
-
 ```bash
-npm run cucumberWithTS
+npm run cucumber
 ```
 
-### Run specific feature file
-
+### Run specific test profile
 ```bash
-npx cucumber-js src/features/specific-feature.feature --require-module ts-node/register --require src/step-definitions/**/*.ts
+npm run cucumber contactUs    # Run contact us tests
+npm run cucumber loginPortal  # Run login portal tests
+npm run cucumber smoke       # Run smoke tests
+npm run cucumber regression  # Run regression tests
 ```
 
 ## Configuration
 
-- Tests run in headed mode by default (browser visible)
-- Viewport is set to 1920x1080
-- Tests use Chromium browser
+### Environment Variables (.env)
+```properties
+UI_AUTOMATION_BROWSER=chromium  # Browser type
+HEADLESS=false                 # Run in headed mode
+BROWSER_WIDTH=1920             # Viewport width
+BROWSER_HEIGHT=1080            # Viewport height
+RETRY=0                       # Test retry count
+PARALLEL=1                    # Parallel execution count
+```
+
+## Test Reports
+- HTML reports are generated in `reports/report.html`
+- JSON reports are available in `reports/report.json`
+- Playwright traces are saved in `test-results/trace/`
 
 ## Debugging
 
-To run tests with debug logging:
-
+### Show Trace Viewer
 ```bash
-DEBUG=cucumber* npm run cucumberWithTS
+npm run show-trace
 ```
 
-## Contributing
+### Debug Test Execution
+```bash
+PWDEBUG=1 npm run cucumber
+```
 
-1. Create a feature branch
-2. Commit your changes
-3. Push to the branch
-4. Create a Pull Request
-
-## License
-
-ISC
+## Key Features
+- Page Object Model implementation
+- Custom World object for sharing context
+- Environment configuration
+- HTML and JSON reporting
+- Trace viewer support
+- Parallel execution support
+- Retry mechanism for flaky tests
+- Custom logger implementation
