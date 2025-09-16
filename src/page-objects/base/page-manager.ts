@@ -14,15 +14,15 @@ export class pageManager {
         return new BasePage();
     }
 
-    createHomePage(): HomePage {
+    createHomePage() {
         return new HomePage();
     }
 
-    createContactUsPage(): ContactUsPage {
+    createContactUsPage() {
         return new ContactUsPage();
     }
 
-    createLoginPortalPage(): loginPortalPage {
+    createLoginPortalPage() {
         return new loginPortalPage();
     }
 }
