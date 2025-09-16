@@ -1,8 +1,8 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
 import { expect } from '@playwright/test';
-import { pageFixture } from './hooks/browserContextFixture';
-import { CucumberWorld } from '../step-definitions/world/cucumberWorld';
-import { loginPortalPage } from '../page-objects/login-portal-page';
+// import { pageFixture } from './hooks/browserContextFixture';
+import { CucumberWorld } from './world/cucumberWorld';
+// import { loginPortalPage } from '../page-objects/login-portal-page';
 
 let alertText: string;
 
@@ -17,7 +17,7 @@ When('I enter {string} and {string}', async function (this: CucumberWorld, usern
 
 When('I click on the login button', async function (this: CucumberWorld) {
     // Set up dialog handler BEFORE clicking the button
-    pageFixture.page.on('dialog', async (alert) => {
+    this.loginPortalPage.page.on('dialog', async (alert) => {
         alertText = alert.message().toLowerCase(); // Convert to lowercase for case-insensitive comparison
         await alert.accept();
     });
@@ -25,6 +25,6 @@ When('I click on the login button', async function (this: CucumberWorld) {
     await this.loginPortalPage.loginButton.click();
 });
 
-Then('I should see the {string} message', async (message: string) => {
+Then('I should see the {string} message', async function (this: CucumberWorld, message: string) {
     expect(alertText).toBe(message);
 });
