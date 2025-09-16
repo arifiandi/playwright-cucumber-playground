@@ -1,12 +1,7 @@
-import { BrowserContext, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { pageFixture } from '../../step-definitions/hooks/browserContextFixture'; // Adjust the import path as necessary
 
 export class BasePage {
-    // protected readonly page: Page;
-
-    // constructor() {
-    //     this.page = pageFixture.page;
-    // }
     get page(): Page {
         return pageFixture.page;
     }

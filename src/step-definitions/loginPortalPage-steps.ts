@@ -1,8 +1,6 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
 import { expect } from '@playwright/test';
-// import { pageFixture } from './hooks/browserContextFixture';
 import { CucumberWorld } from './world/cucumberWorld';
-// import { loginPortalPage } from '../page-objects/login-portal-page';
 
 let alertText: string;
 

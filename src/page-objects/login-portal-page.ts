@@ -19,6 +19,7 @@ export class loginPortalPage extends BasePage {
         return this.page.getByRole('button', { name: 'Login' });
     }
 
+    // Methods
     public async goToLoginPortal(): Promise<void> {
         await this.navigate('http://webdriveruniversity.com/Login-Portal/index.html');
     }
