@@ -21,6 +21,7 @@ const config = {
 // The `browsers` object contains the supported browsers and their respective launch functions
 // The `browserInstance` variable will hold the instance of the launched browser
 // The `initializeBrowserContext` function initializes the browser context based on the selected browser
+const sessionTimestamp = new Date().toISOString().replace(/[:.]/g, '-');
 
 const browsers: { [key: string]: BrowserType } = {
     'chromium': chromium,
@@ -48,7 +49,7 @@ async function initializePage(): Promise<void> {
     });
     pageFixture.page = await pageFixture.context.newPage();
     setDefaultTimeouts(pageFixture.page); // Set default timeouts for the page
-    
+
     await pageFixture.page.setViewportSize({
         width: config.width,
         height: config.height
@@ -77,41 +78,44 @@ Before(async function () {
         this.homePage = this.pageManager.createHomePage(); // Create an instance of HomePage
         this.contactUsPage = this.pageManager.createContactUsPage(); // Create an instance of ContactUsPage
         this.loginPortalPage = this.pageManager.createLoginPortalPage(); // Create an instance of LoginPortalPage
+
+        // Start tracing
+        await pageFixture.context.tracing.start({
+            screenshots: true,
+            snapshots: true,
+            sources: true
+        });
     } catch (error) {
         console.error(`Error initializing browser context: ${error}`);
     }
-
-    // Start tracing
-    await pageFixture.context.tracing.start({
-        screenshots: true,
-        snapshots: true,
-        sources: true
-    });
 });
 
 // After is a hook that runs after each scenario in the test suite
 After(async function ({ pickle, result }) {
-    if (result?.status === Status.FAILED) {
-        // If the scenario failed, take a screenshot
-        if (pageFixture.page) {
-            const screenshotPath = `./reports/screenshots/${pickle.name}${Date.now()}.png`;
+    // Generate unique trace filename using session timestamp and scenario name
+    const traceFileName = `${sessionTimestamp}_${pickle.name.replace(/\s+/g, '-')}.zip`;
+    
+    try {
+        // Save trace for this scenario
+        await pageFixture.context.tracing.stop({
+            path: `test-results/trace/${traceFileName}`
+        });
+
+        // Take screenshot if test failed
+        if (result?.status === Status.FAILED && pageFixture.page) {
+            const screenshotPath = `./reports/screenshots/${traceFileName.replace('.zip', '.png')}`;
             const image = await pageFixture.page.screenshot({
                 path: screenshotPath,
                 type: 'png'
             });
             await this.attach(image, 'image/png');
-            console.log(`Screenshot taken for failed scenario: ${screenshotPath}`);
-        } else {
-            console.error('Page is not defined, cannot take screenshot.');
         }
+    } catch (error) {
+        console.error(`Error saving trace/screenshot: ${error}`);
     }
-    // Stop tracing and save to file named after the scenario
-    await pageFixture.context.tracing.stop({
-        path: `test-results/trace/${pickle.name.replace(/\s+/g, '-')}.zip`
-    });
 
     // Close the browser context
-    if(browserInstance) {
+    if (browserInstance) {
         await pageFixture.page?.close();
         await browserInstance.close();
     }
