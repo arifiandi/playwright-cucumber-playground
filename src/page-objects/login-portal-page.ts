@@ -1,9 +1,10 @@
-import { Page } from "@playwright/test";
 import { BasePage } from "./base/base-page";
-import { pageFixture } from "../step-definitions/hooks/browserContextFixture";
+// import { pageFixture } from "../step-definitions/hooks/browserContextFixture";
 
 export class loginPortalPage extends BasePage {
-    public page: Page = pageFixture.page;
+    // constructor(page: Page) {
+    //     super(page);
+    // }
 
     // Locators
     private readonly usernameInput = this.page.getByPlaceholder('Username');

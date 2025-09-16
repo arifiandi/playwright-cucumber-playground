@@ -2,15 +2,18 @@ import { BrowserContext, Locator, Page } from "@playwright/test";
 import { pageFixture } from '../../step-definitions/hooks/browserContextFixture'; // Adjust the import path as necessary
 
 export class BasePage {
-    protected readonly page: Page;
+    // protected readonly page: Page;
 
-    constructor() {
-        this.page = pageFixture.page;
+    // constructor() {
+    //     this.page = pageFixture.page;
+    // }
+    get page(): Page {
+        return pageFixture.page;
     }
 
     //   Promise<void> in typescript when you're defining an async function that doesn't explicitly return a value
     public async navigate(url: string): Promise<void> {
-        await pageFixture.page.goto(url);
+        await this.page.goto(url);
     }
 
     public async waitAndClickByRole(role: string, name: string): Promise<void> {
