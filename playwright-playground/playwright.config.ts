@@ -5,11 +5,11 @@ export default defineConfig({
   reporter: 'html',
   webServer: {
     command: 'npm start',
-    url: 'http://localhost:5000/',
+    url: 'http://localhost:3000/',
     reuseExistingServer: true
   },
   use: {
-    baseURL: 'http://localhost:5000/',
+    baseURL: 'http://localhost:3000/',
     headless: false
   },
   // projects: [
