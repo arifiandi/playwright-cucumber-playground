@@ -2,22 +2,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Playwright Tests",
             "type": "node",
             "request": "launch",
-            "runtimeExecutable": "/Users/ridwanarifiandi/.nvm/versions/node/v23.4.0/bin/npx",
-            "runtimeArgs": [
-                "playwright",
+            "name": "Debug Playwright Test",
+            "runtimeExecutable": "/Users/ridwanarifiandi/.nvm/versions/node/v23.4.0/bin/node",
+            "program": "${workspaceFolder}/playwright-playground/node_modules/@playwright/test/cli.js",
+            "args": [
                 "test",
-                "--debug",
-                "${file}"
+                "${file}",
+                "--debug"
             ],
-            "skipFiles": ["<node_internals>/**"],
-            "cwd": "${workspaceFolder}/playwright-playground",
             "console": "integratedTerminal",
-            "env": {
-                "PATH": "${env:PATH}"
-            }
+            "cwd": "${workspaceFolder}/playwright-playground",
+            "skipFiles": ["<node_internals>/**"]
         }
     ]
 }
