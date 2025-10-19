@@ -1,20 +1,23 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Playwright Tests",
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
+            "runtimeExecutable": "/Users/ridwanarifiandi/.nvm/versions/node/v23.4.0/bin/npx",
+            "runtimeArgs": [
+                "playwright",
+                "test",
+                "--debug",
+                "${file}"
             ],
-            "program": "${workspaceFolder}/playwright-playground/test/First.spec.ts",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
+            "skipFiles": ["<node_internals>/**"],
+            "cwd": "${workspaceFolder}/playwright-playground",
+            "console": "integratedTerminal",
+            "env": {
+                "PATH": "${env:PATH}"
+            }
         }
     ]
 }
