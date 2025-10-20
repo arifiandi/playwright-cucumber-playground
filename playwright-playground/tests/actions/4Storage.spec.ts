@@ -5,13 +5,11 @@ test.use({
         cookies: [],
         origins: [
             {
-                origin: 'http://localhost:5000',
-                localStorage: [
-                    {
-                        name: 'name',
-                        value: 'Alex'
-                    }
-                ]
+                origin: 'http://localhost:3000',
+                localStorage: [{
+                    name: 'name',
+                    value: 'Alex'
+                }]
             }
         ]
     }
@@ -38,8 +36,23 @@ test('saving storage - correct load', async ({ page }) => {
 
 });
 
-test('load from configuration - correct load', async ({ page }) => {
+test('load from configuration', async ({ page }) => {
     await page.goto('FeedBackForm.html');
+
+    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
+
+    await expect(nameField).toHaveValue('Alex');
+});
+
+test('Storage - configure inside test', async ({ page }) => {
+    await page.goto('FeedBackForm.html');
+
+    await page.evaluate(() => {
+        localStorage.setItem('email', 'alex@email.com');
+        // sessionStorage.setItem('email', 'alex@email.com');
+    });
+
+    await page.reload();
 
     const nameField = page.getByRole('textbox', { name: 'Name (required):' });
 
