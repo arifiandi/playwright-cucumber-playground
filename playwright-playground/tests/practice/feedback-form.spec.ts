@@ -59,11 +59,37 @@ test('Form is NOT submitted without minimal fields', async ({ page }) => {
 });
 
 test('Form is completed-clear button clears inputs', async ({ page }) => {
+    let formsubmitted = false;
+
+    page.on('dialog', dialog => {
+        dialog.accept();
+        formsubmitted = true;
+    })
+
+    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
+    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
+    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
+    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
+    const checkbox = page.locator('#tos');
+    const clearProgressBtn = page.getByRole('button', { name: 'Clear Progress' });
+
+    await nameField.fill('John Doe');
+    await emailField.fill('john.doe@example.com');
+    await commentField.fill('Great event!');
+    await highlightsField.fill('Networking opportunities');
+    await checkbox.check();
+    await clearProgressBtn.click();
+
+    expect(await nameField.inputValue()).toBe('');
+    expect(await emailField.inputValue()).toBe('');
+    expect(await commentField.inputValue()).toBe('');
+    expect(await highlightsField.inputValue()).toBe('');
+    expect(await checkbox.isChecked()).toBeFalsy();
 
 });
 
 test('Form is completed - clear button clears memory storage', async ({ page }) => {
-    
+
 });
 
 test('Form is completed -clear button does not clear inputs if dialog rejected', async ({ page }) => {
