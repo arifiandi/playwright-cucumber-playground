@@ -93,7 +93,32 @@ test('Form is completed - clear button clears memory storage', async ({ page }) 
 });
 
 test('Form is completed -clear button does not clear inputs if dialog rejected', async ({ page }) => {
+    let formsubmitted = false;
 
+    page.on('dialog', dialog => {
+        dialog.dismiss();
+        formsubmitted = true;
+    })
+
+    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
+    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
+    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
+    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
+    const checkbox = page.locator('#tos');
+    const clearProgressBtn = page.getByRole('button', { name: 'Clear Progress' });
+
+    await nameField.fill('John Doe');
+    await emailField.fill('john.doe@example.com');
+    await commentField.fill('Great event!');
+    await highlightsField.fill('Networking opportunities');
+    await checkbox.check();
+    await clearProgressBtn.click();
+
+    expect(await nameField.inputValue()).toBe('John Doe');
+    expect(await emailField.inputValue()).toBe('john.doe@example.com');
+    expect(await commentField.inputValue()).toBe('Great event!');
+    expect(await highlightsField.inputValue()).toBe('Networking opportunities');
+    expect(await checkbox.isChecked()).toBeTruthy();
 });
 
 test('Form is completed - save data button saves data', async ({ page }) => {
