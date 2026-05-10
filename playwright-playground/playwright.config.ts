@@ -5,6 +5,7 @@ export default defineConfig({
   reporter: 'html',
   webServer: {
     command: 'npm start',
+    cwd: '.',
     url: 'http://localhost:3000/',
     reuseExistingServer: true
   },
