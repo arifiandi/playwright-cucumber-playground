@@ -1,4 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+const someName = 'John Doe';
+const someEmail = 'john.doe@example.com';
+const someComment = 'Great event!';
+const someHighlights = 'Networking opportunities';
+
 
 test.beforeEach(async ({ page }) => {
     await page.goto('FeedBackForm.html');
@@ -11,20 +17,9 @@ test('Submit feedback form with with required fields', async ({ page }) => {
         formsubmitted = true;
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
-    const checkbox = page.locator('#tos');
-    const submitBtn = page.getByRole('button', { name: 'Submit' })
+    await completeFields(page);
 
-    await nameField.fill('John Doe');
-    await emailField.fill('john.doe@example.com');
-    await commentField.fill('Great event!');
-    await highlightsField.fill('Networking opportunities');
-    await checkbox.check();
-
-    await submitBtn.click();
+    await clickButton(page, 'Submit');
 
     expect(formsubmitted).toBeTruthy();
 
@@ -38,29 +33,13 @@ test('Form is submitted with required fields - form is cleared after submit', as
         formsubmitted = true;
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
-    const checkbox = page.locator('#tos');
-    const submitBtn = page.getByRole('button', { name: 'Submit' })
+    await completeFields(page);
 
-    await nameField.fill('John Doe');
-    await emailField.fill('john.doe@example.com');
-    await commentField.fill('Great event!');
-    await highlightsField.fill('Networking opportunities');
-    await checkbox.check();
-
-    await submitBtn.click();
+    await clickButton(page, 'Submit');
 
     expect(formsubmitted).toBeTruthy();
 
-    await expect(nameField).toBeEmpty();
-    await expect(emailField).toBeEmpty();
-    await expect(commentField).toBeEmpty();
-    await expect(highlightsField).toBeEmpty();
-    await expect(checkbox).not.toBeChecked();
-
+    await checkIfItemsEmpty(page);
 });
 
 test('Form is NOT submitted without minimal fields', async ({ page }) => {
@@ -71,16 +50,10 @@ test('Form is NOT submitted without minimal fields', async ({ page }) => {
         formsubmitted = true;
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const checkbox = page.locator('#tos');
-    const submitBtn = page.getByRole('button', { name: 'Submit' })
+    await completeFields(page);
+    await page.getByLabel('name').clear();
 
-    await nameField.fill('John Doe');
-    await commentField.fill('Great event!');
-    await checkbox.check();
-
-    await submitBtn.click();
+    await clickButton(page, 'Submit');
 
     expect(formsubmitted).toBeFalsy();
 
@@ -94,51 +67,22 @@ test('Form is completed - clear button clears inputs', async ({ page }) => {
         formsubmitted = true;
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
-    const checkbox = page.locator('#tos');
-    const clearProgressBtn = page.getByRole('button', { name: 'Clear Progress' });
+    await completeFields(page);
+    await clickButton(page, 'Clear');
 
-    await nameField.fill('John Doe');
-    await emailField.fill('john.doe@example.com');
-    await commentField.fill('Great event!');
-    await highlightsField.fill('Networking opportunities');
-    await checkbox.check();
-    await clearProgressBtn.click();
-
-    expect(await nameField.inputValue()).toBe('');
-    expect(await emailField.inputValue()).toBe('');
-    expect(await commentField.inputValue()).toBe('');
-    expect(await highlightsField.inputValue()).toBe('');
-    expect(await checkbox.isChecked()).toBeFalsy();
+    await checkIfItemsEmpty(page);
 });
 
 test('Form is NOT submitted if user selects NO on dialog', async ({ page }) => {
-     page.on('dialog', dialog => {
+     
+    page.on('dialog', dialog => {
         dialog.dismiss()
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
-    const checkbox = page.locator('#tos');
-    const clearProgressBtn = page.getByRole('button', { name: 'Clear Progress' });
+    await completeFields(page);
+    await clickButton(page, 'Submit')
 
-    await nameField.fill('John Doe');
-    await emailField.fill('john.doe@example.com');
-    await commentField.fill('Great event!');
-    await highlightsField.fill('Networking opportunities');
-    await checkbox.check();
-    await clearProgressBtn.click();
-
-    await expect(nameField).toBeEmpty();
-    await expect(emailField).toBeEmpty();
-    await expect(commentField).toBeEmpty();
-    await expect(highlightsField).toBeEmpty();
-    await expect(checkbox).not.toBeChecked();
+    await checkIfItemsNotEmpty(page);
 });
 
 test('Form is completed - clear button clears memory storage', async ({ page }) => {
@@ -146,28 +90,13 @@ test('Form is completed - clear button clears memory storage', async ({ page }) 
         dialog.accept()
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
-    const checkbox = page.locator('#tos');
-    const clearProgressBtn = page.getByRole('button', { name: 'Clear Progress' });
+    await completeFields(page);
 
-    await nameField.fill('John Doe');
-    await emailField.fill('john.doe@example.com');
-    await commentField.fill('Great event!');
-    await highlightsField.fill('Networking opportunities');
-    await checkbox.check();
-
-    await clearProgressBtn.click();
+    await clickButton(page, 'Clear');
 
     await page.reload()
 
-    await expect(nameField).toBeEmpty();
-    await expect(emailField).toBeEmpty();
-    await expect(commentField).toBeEmpty();
-    await expect(highlightsField).toBeEmpty();
-    await expect(checkbox).not.toBeChecked();
+    await checkIfItemsEmpty(page);
 
 });
 
@@ -179,27 +108,13 @@ test('Form is completed - clear button does not clear inputs if dialog rejected'
         formcleared = true;
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
-    const checkbox = page.locator('#tos');
-    const clearProgressBtn = page.getByRole('button', { name: 'Clear Progress' });
+    await completeFields(page);
 
-    await nameField.fill('John Doe');
-    await emailField.fill('john.doe@example.com');
-    await commentField.fill('Great event!');
-    await highlightsField.fill('Networking opportunities');
-    await checkbox.check();
-    await clearProgressBtn.click();
+    await clickButton(page, 'Clear');
 
     await expect(formcleared).toBeTruthy();
 
-    expect(await nameField.inputValue()).toBe('John Doe');
-    expect(await emailField.inputValue()).toBe('john.doe@example.com');
-    expect(await commentField.inputValue()).toBe('Great event!');
-    expect(await highlightsField.inputValue()).toBe('Networking opportunities');
-    expect(await checkbox.isChecked()).toBeTruthy();
+    await checkIfItemsNotEmpty(page);
 });
 
 test('Form is completed - save data button saves data', async ({ page }) => {
@@ -210,19 +125,60 @@ test('Form is completed - save data button saves data', async ({ page }) => {
         formsaved = true;
     })
 
-    const nameField = page.getByRole('textbox', { name: 'Name (required):' });
-    const emailField = page.getByRole('textbox', { name: 'Email (required):' });
-    const commentField = page.getByRole('textbox', { name: 'Comment (required):' });
-    const highlightsField = page.getByRole('textbox', { name: 'Event Highlights (optional):' });
-    const checkbox = page.locator('#tos');
-    const saveProgressBtn = page.getByRole('button', { name: 'Save Progress' });
+    await completeFields(page);
 
-    await nameField.fill('John Doe');
-    await emailField.fill('john.doe@example.com');
-    await commentField.fill('Great event!');
-    await highlightsField.fill('Networking opportunities');
-    await checkbox.check();
-    await saveProgressBtn.click();
+    await clickButton(page, 'Save');
+
+    await checkIfItemsNotEmpty(page);
 
     await expect(formsaved).toBeTruthy();
+
 });
+
+async function clickButton(page: Page, buttonName: 'Submit' | 'Save' | 'Clear') {
+    await page.getByRole('button', {
+        name: buttonName
+    }).click()
+}
+
+async function completeFields(page: Page) {
+    const nameField = page.getByLabel('name');
+    const emailField = page.getByLabel('email');
+    const commentField = page.getByLabel('comment');
+    const highlightsField = page.getByLabel('highlights');
+    const checkbox = page.getByRole('checkbox', { name: 'I agree' });
+
+    await nameField.fill(someName);
+    await emailField.fill(someEmail);
+    await commentField.fill(someComment);
+    await highlightsField.fill(someHighlights);
+    await checkbox.check();
+}
+
+async function checkIfItemsNotEmpty(page: Page) {
+    const nameLabel = page.getByLabel('name')
+    const emailLabel = page.getByLabel('email')
+    const commentLabel = page.getByLabel('comment')
+    const highlightsLabel = page.getByLabel('highlights')
+    const checkBox = page.getByRole('checkbox', { name: 'I agree' })
+
+    await expect(nameLabel).toHaveValue(someName)
+    await expect(emailLabel).toHaveValue(someEmail)
+    await expect(commentLabel).toHaveValue(someComment)
+    await expect(highlightsLabel).toHaveValue(someHighlights)
+    await expect(checkBox).toBeChecked()
+}
+
+async function checkIfItemsEmpty(page: Page) {
+    const nameLabel = page.getByLabel('name')
+    const emailLabel = page.getByLabel('email')
+    const commentLabel = page.getByLabel('comment')
+    const highlightsLabel = page.getByLabel('highlights')
+    const checkBox = page.getByRole('checkbox', { name: 'I agree' })
+
+    await expect(nameLabel).toBeEmpty()
+    await expect(emailLabel).toBeEmpty()
+    await expect(commentLabel).toBeEmpty()
+    await expect(highlightsLabel).toBeEmpty()
+    await expect(checkBox).not.toBeChecked()
+}
