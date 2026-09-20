@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 
 // This file is for testing the test.only functionality of Playwright
 // Only the tests marked with test.only will be run, and all other tests will be skipped. This is useful for focusing on a specific test or set of tests during development or debugging.
