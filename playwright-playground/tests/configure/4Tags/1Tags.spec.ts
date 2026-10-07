@@ -16,7 +16,9 @@ test('Fields are completed', () => {
 
 }) 
 
-test.describe('With describe block', {tag: '@Error'},() => {
+test.describe('Error while saving data', {
+    tag: '@Error'
+}, () => {
     test('Network error', () => {
         console.log('test 1')
     })
