@@ -4,6 +4,8 @@ export default defineConfig({
   testDir: './tests',
   reporter: 'html',
   // grep: /Form/,
+  fullyParallel: true,
+  workers:'50%',
   webServer: {
     command: 'npm start',
     cwd: '.',
@@ -13,7 +15,7 @@ export default defineConfig({
   // Use provides option for specific browser
   use: {
     baseURL: 'http://localhost:3000/',
-    headless: false
+    headless: false,
   },
   // projects: [
   //   {
